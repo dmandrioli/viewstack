@@ -1,5 +1,4 @@
 .mblViewStack {
-clip: rect(0px, 300px, 200px, 0px);
   box-sizing: border-box;
 
 }
@@ -7,7 +6,7 @@ clip: rect(0px, 300px, 200px, 0px);
 .mblViewStackFlexBox {
   display: -webkit-flex;
   height: 100%;
-  width: 300%;
+  width: 100%;
   margin-left:0%;
   .animateMarginLeft();
 }
@@ -15,18 +14,17 @@ clip: rect(0px, 300px, 200px, 0px);
 .mblViewStack:before{
   content: "";
   position: absolute;
-  //z-index: 1;
   border: solid 1px black;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
 }
 
-.mblViewStackFlexBox > div{
-  //display: none;
-  height: 100%;
-  width: 100%;
-  //margin-left: -100%;
+.mblViewStackFlexBox div{
+  font-weight: bold;
+  min-width: 100%;
+  max-width: 100%;
+
 }
 
 @ANIMATION_DURATION: 0.4s;
