@@ -1,7 +1,8 @@
 define([
     "dojo/_base/declare",
-    "dijit/_WidgetBase", "dojo/dom-geometry"],
-    function(declare, WidgetBase, domGeom){
+    "dojo/_base/lang",
+    "dijit/_WidgetBase", "dojo/dom-geometry", "dojo/dom-class"],
+    function(declare, lang, WidgetBase, domGeom, domClass){
         return declare(WidgetBase, {
             // summary:
             //		xxx
@@ -27,15 +28,44 @@ define([
             },
 
             _leftMargin:0,
+            _visibleIndex:0,
             next:function(){
                 this._leftMargin -= 100;
+                this._visibleIndex++;
                 this.domNode.children[0].style.marginLeft = this._leftMargin + "%";
             },
             previous:function(){
                 this._leftMargin += 100;
+                this._visibleIndex--;
                 this.domNode.children[0].style.marginLeft = this._leftMargin + "%";
             },
 
+            _enableAnimation: function (){
+                domClass.add(this.domNode.children[0], "mblSlideAnim");
+            },
+            _disableAnimation: function (){
+                domClass.remove(this.domNode.children[0], "mblSlideAnim");
+            },
+
+            show: function(childIndex, direction){
+
+                if(direction == "start"){
+                    if(this._visibleIndex == childIndex + 1){
+
+                    }else{
+                        console.log("start", childIndex);
+                        this._disableAnimation();
+                        domClass.add(this.domNode.children[0].children[childIndex], "order" + (this._visibleIndex-1).toString());
+                        this.next();
+                        setTimeout(lang.hitch(this, function(){
+                        this._enableAnimation();
+                        this.previous();
+                        }),0);
+                    }
+                }else{
+
+                }
+            },
             destroy: function(){
             }
         });
