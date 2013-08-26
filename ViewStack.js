@@ -1,8 +1,8 @@
 define([
     "dojo/_base/declare",
     "dojo/_base/lang",
-    "dijit/_WidgetBase", "dojo/dom-geometry", "dojo/dom-class"],
-    function(declare, lang, WidgetBase, domGeom, domClass){
+    "dijit/_WidgetBase", "dojo/dom-geometry", "dojo/dom-class", "dojo/_base/array"],
+    function(declare, lang, WidgetBase, domGeom, domClass, array){
         return declare(WidgetBase, {
             // summary:
             //		xxx
@@ -23,7 +23,10 @@ define([
                 this.inherited(arguments);
                 var clipStr = "rect(0px, W, H, 0px)";
                 var cb = domGeom.getContentBox(this.domNode);
-                this.domNode.style.clip = clipStr.replace("W", cb.w + "px").replace("H", cb.h + "px");
+               // this.domNode.style.clip = clipStr.replace("W", cb.w + "px").replace("H", cb.h + "px");
+//                array.forEach(this.children, function(v){
+//                    v.domNode.style.display = (v === this) ? "" : "none";
+//                }, this);
 
             },
 
