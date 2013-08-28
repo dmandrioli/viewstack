@@ -14,59 +14,75 @@ define([
             //		The name of the CSS class of this widget.
             baseClass: "mblViewStack",
 
-            postCreate: function(){
-                this.inherited(arguments);
+            _clipArea: function(){
+                var cb = domGeom.getContentBox(this.domNode);
+                var clipStr = "rect(0px, Wpx, Hpx, 0px)";
+                this.domNode.style.clip = clipStr.replace("W", cb.w).replace("H", cb.h);
+            },
 
+            resize: function(){
+
+                this._clipArea();
             },
 
             buildRendering: function(){
                 this.inherited(arguments);
-                var clipStr = "rect(0px, W, H, 0px)";
-                var cb = domGeom.getContentBox(this.domNode);
-               // this.domNode.style.clip = clipStr.replace("W", cb.w + "px").replace("H", cb.h + "px");
-//                array.forEach(this.children, function(v){
-//                    v.domNode.style.display = (v === this) ? "" : "none";
-//                }, this);
+                this._clipArea();
 
+                for(var i=1; i < this.domNode.children.length; i++){
+                    this.domNode.children[i].style.display = "none";
+                }
             },
 
             _leftMargin:0,
             _visibleIndex:0,
-            next:function(){
-                this._leftMargin -= 100;
-                this._visibleIndex++;
-                this.domNode.children[0].style.marginLeft = this._leftMargin + "%";
+
+            _enableAnimation: function (node){
+                domClass.add(node, "mblSlideAnim");
             },
-            previous:function(){
-                this._leftMargin += 100;
-                this._visibleIndex--;
-                this.domNode.children[0].style.marginLeft = this._leftMargin + "%";
+            _disableAnimation: function (node){
+                domClass.remove(node, "mblSlideAnim");
             },
 
-            _enableAnimation: function (){
-                domClass.add(this.domNode.children[0], "mblSlideAnim");
-            },
-            _disableAnimation: function (){
-                domClass.remove(this.domNode.children[0], "mblSlideAnim");
-            },
+            show: function(childIndex, from){
 
-            show: function(childIndex, direction){
+                var child = this.domNode.children[childIndex];
+                child.style.display = "";
 
-                if(direction == "start"){
-                    if(this._visibleIndex == childIndex + 1){
+                var current = this.domNode.children[this._visibleIndex];
 
-                    }else{
-                        console.log("start", childIndex);
-                        this._disableAnimation();
-                        domClass.add(this.domNode.children[0].children[childIndex], "order" + (this._visibleIndex-1).toString());
-                        this.next();
-                        setTimeout(lang.hitch(this, function(){
-                        this._enableAnimation();
-                        this.previous();
-                        }),0);
-                    }
+                if(from == "start"){
+                    this._disableAnimation(child);
+                    child.style.marginLeft = "-100%";
+
+                    setTimeout(lang.hitch(this, function(){
+                        this._enableAnimation(child);
+                        this._enableAnimation(current);
+                        current.style.marginLeft = "100%";
+
+                        child.style.marginLeft = 0;
+                    }),0);
+
                 }else{
+                    this._disableAnimation(child);
+                    child.style.marginLeft = "100%";
 
+                    setTimeout(lang.hitch(this, function(){
+                        this._enableAnimation(child);
+                        this._enableAnimation(current);
+                        current.style.marginLeft = "-100%";
+
+                        child.style.marginLeft = 0;
+                    }),0);
+
+                }
+                current.addEventListener("webkitTransitionEnd", lang.hitch(this,this._hideAfterTransition));
+                this._visibleIndex = childIndex;
+
+            },
+            _hideAfterTransition: function(event){
+                if(event.target.style.marginLeft == "100%" || event.target.style.marginLeft == "-100%"){
+                    event.target.style.display = "none";
                 }
             },
             destroy: function(){
