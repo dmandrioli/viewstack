@@ -21,7 +21,6 @@ define([
             },
 
             resize: function(){
-
                 this._clipArea();
             },
 
@@ -29,8 +28,11 @@ define([
                 this.inherited(arguments);
                 this._clipArea();
 
-                for(var i=1; i < this.domNode.children.length; i++){
-                    this.domNode.children[i].style.display = "none";
+                for(var i=0; i < this.domNode.children.length; i++){
+                    if(i>0){
+                        this.domNode.children[i].style.display = "none";
+                    }
+                    this.domNode.children[i].addEventListener("webkitTransitionEnd", lang.hitch(this,this._hideAfterTransition));
                 }
             },
 
@@ -76,11 +78,12 @@ define([
                     }),0);
 
                 }
-                current.addEventListener("webkitTransitionEnd", lang.hitch(this,this._hideAfterTransition));
+
                 this._visibleIndex = childIndex;
 
             },
             _hideAfterTransition: function(event){
+                console.log("hide", event.target);
                 if(event.target.style.marginLeft == "100%" || event.target.style.marginLeft == "-100%"){
                     event.target.style.display = "none";
                 }
