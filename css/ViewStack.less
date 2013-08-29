@@ -1,4 +1,4 @@
-@ANIMATION_DURATION: 0.4s;
+@ANIMATION_DURATION: .4s;
 @ANIMATION_STYLE:  ease-in-out;
 
 .mblViewStack {
@@ -20,12 +20,37 @@
 }
 
 .mblSlideAnim {
-  .slideAnimation();
+  //.slideAnimation();
+  .animateTransform();
 }
 
 .slideAnimation{
   -moz-transition: margin-left @ANIMATION_DURATION @ANIMATION_STYLE;
   -webkit-transition: margin-left @ANIMATION_DURATION @ANIMATION_STYLE;
-  -ms-transition: margin-left @ANIMATION_DURATION @ANIMATION_STYLE;
+  //-ms-transition: margin-left @ANIMATION_DURATION @ANIMATION_STYLE;
   transition: margin-left @ANIMATION_DURATION @ANIMATION_STYLE;
 }
+
+.animateTransform{
+  -moz-transition: -moz-transform @ANIMATION_DURATION @ANIMATION_STYLE;
+  -webkit-transition: -webkit-transform @ANIMATION_DURATION @ANIMATION_STYLE;
+  //-ms-transition: -mstransform @ANIMATION_DURATION @ANIMATION_STYLE;
+  transition: transform @ANIMATION_DURATION @ANIMATION_STYLE;
+}
+
+.leftTranslated{
+  -webkit-transform: translate3d(-100%, 0px, 0px);
+  //-moz-transform: translate3d(-100%, 0px, 0px);
+  transform: translate3d(-100%, 0px, 0px);
+}
+.rightTranslated{
+  -webkit-transform: translate3d(100%, 0px, 0px);
+  transform: translate3d(100%, 0px, 0px);
+}
+
+.notTranslated{
+  -webkit-transform: translate3d(0px, 0px, 0px);
+  transform: translate3d(0px, 0px, 0px);
+
+}
+
