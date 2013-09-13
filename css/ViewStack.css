@@ -1,0 +1,39 @@
+.mblViewStack {
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+.mblViewStack div {
+  position: absolute;
+  font-weight: bold;
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  max-height: 100%;
+}
+.mblSlideAnim {
+  -moz-transition: -moz-transform 0.4s ease-in-out;
+  -webkit-transition: -webkit-transform 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
+}
+.slideAnimation {
+  -moz-transition: margin-left 0.4s ease-in-out;
+  -webkit-transition: margin-left 0.4s ease-in-out;
+  transition: margin-left 0.4s ease-in-out;
+}
+.animateTransform {
+  -moz-transition: -moz-transform 0.4s ease-in-out;
+  -webkit-transition: -webkit-transform 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
+}
+.leftTranslated {
+  -webkit-transform: translate3d(-100%, 0px, 0px);
+  transform: translate3d(-100%, 0px, 0px);
+}
+.rightTranslated {
+  -webkit-transform: translate3d(100%, 0px, 0px);
+  transform: translate3d(100%, 0px, 0px);
+}
+.notTranslated {
+  -webkit-transform: translate3d(0px, 0px, 0px);
+  transform: translate3d(0px, 0px, 0px);
+}

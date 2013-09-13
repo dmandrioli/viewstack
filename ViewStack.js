@@ -20,7 +20,7 @@ define([
                 if(this.domNode.style.width != "100%"){
                     var cb = domGeom.getContentBox(this.domNode);
                     var clipStr = "rect(0px, Wpx, Hpx, 0px)";
-                    this.domNode.style.clip = clipStr.replace("W", cb.w).replace("H", cb.h);
+                    //this.domNode.style.clip = clipStr.replace("W", cb.w).replace("H", cb.h);
                 }
             },
 
