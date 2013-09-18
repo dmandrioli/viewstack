@@ -30,6 +30,7 @@ define([
 
             buildRendering: function(){
                 this.inherited(arguments);
+
                 this._clipArea();
 
                 for(var i=0; i < this.domNode.children.length; i++){

@@ -1,9 +1,11 @@
 .mblViewStack {
   box-sizing: border-box;
   overflow-x: hidden;
+  position: relative !important;
 }
 .mblViewStack div {
-  position: absolute;
+  position: absolute !important;
+  box-sizing: border-box;
   font-weight: bold;
   min-width: 100%;
   max-width: 100%;
