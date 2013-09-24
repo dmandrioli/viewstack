@@ -1,8 +1,8 @@
 define([
     "dojo/_base/declare",
     "dojo/_base/lang",
-    "dijit/_WidgetBase", "dojo/dom-geometry", "dojo/dom-class", "dojo/dom-style", "dojo/_base/array"],
-    function(declare, lang, WidgetBase, domGeom, domClass, domStyle, array){
+    "dijit/_WidgetBase", "dojo/dom-geometry", "dojo/dom-class", "dojo/dom-construct"],
+    function(declare, lang, WidgetBase, domGeom, domClass, domConstruct){
         return declare(WidgetBase, {
             // summary:
             //		xxx
@@ -60,8 +60,18 @@ define([
                 node.removeEventListener("webkitTransitionEnd", lang.hitch(this,this._afterTransitionHandle));
                 node.removeEventListener("transitionend", lang.hitch(this,this._afterTransitionHandle)); // IE10 + FF
             },
+            showNext: function(props){
+                this.show((this._visibleIndex + 1) % this.domNode.children.length, props);
+            },
+            showPrevious: function(props){
+                this.show(this._visibleIndex > 0 ? this._visibleIndex - 1 : this.domNode.children.length - 1, props);
+            },
+
 
             show: function(childIndex, props){
+                if (!props){
+                    props = {transition: "slide", direction: "end"};
+                }
                 if(!props.transition || props.transition == "slide"){
                     var toNode = this.domNode.children[childIndex];
                     this._setVisibility(toNode, true);
@@ -82,7 +92,12 @@ define([
             },
 
             addElement: function(node){
-                this.domNode.children.push(node);
+                domConstruct.place(node, this.domNode, "last");
+                this._setVisibility(node, false);
+            },
+
+            removeElement: function(node){
+                domConstruct.destroy(node);
                 this._setVisibility(node, false);
             },
 

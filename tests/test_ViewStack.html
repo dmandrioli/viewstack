@@ -28,6 +28,12 @@
     </style>
 </head>
 <body style="visibility:hidden; margin:2em;">
+
+<button onclick="vs.removeElement(vs.domNode.children[vs.domNode.children.length-1])">Remove last element</button>
+<button onclick="vs.addElement(vs2.domNode.children[0])">Add AAA2</button>
+<button onclick="vs.showPrevious({direction: 'start'})">Previous</button>
+<button onclick="vs.showNext()">Next</button>
+<br>
 <div data-dojo-id="vs" data-dojo-type="viewstack/ViewStack" style="display:inline-block; width:50%; height: 300px;">
     <div style="background-color: honeydew;" id="aaa">
         AAA
@@ -68,41 +74,41 @@
 </div>
 
 <div data-dojo-id="vs2" data-dojo-type="viewstack/ViewStack" style="display:inline-block; width:50%; height: 300px; border: 1px solid black">
-    <div style="background-color: honeydew;" id="aaa2">
-        AAA
-        <button onclick="vs2.show(1,{direction:'start'})">BBB left</button>
-        <button onclick="vs2.show(2,{direction:'start'})">CCC left</button>
-        <button onclick="vs2.show(3,{direction:'start'})">DDD left</button>
-        <button onclick="vs2.show(1,{direction:'end'})">BBB right</button>
-        <button onclick="vs2.show(2,{direction:'end'})">CCC right</button>
-        <button onclick="vs2.show(3,{direction:'end'})">DDD right</button>
+    <div style="background-color: darkolivegreen;" id="aaa2">
+        AAA 2
+        <button onclick="vs2.show(1,{direction:'start'})">BBB left 2</button>
+        <button onclick="vs2.show(2,{direction:'start'})">CCC left 2</button>
+        <button onclick="vs2.show(3,{direction:'start'})">DDD left 2</button>
+        <button onclick="vs2.show(1,{direction:'end'})">BBB right 2</button>
+        <button onclick="vs2.show(2,{direction:'end'})">CCC right 2</button>
+        <button onclick="vs2.show(3,{direction:'end'})">DDD right 2</button>
     </div>
-    <div style="background-color: whitesmoke;" id="bbb2">
-        BBB
-        <button onclick="vs2.show(0,{direction:'start'})">AAA left</button>
-        <button onclick="vs2.show(2,{direction:'start'})">CCC left</button>
-        <button onclick="vs2.show(3,{direction:'start'})">DDD left</button>
-        <button onclick="vs2.show(0,{direction:'end'})">AAA right</button>
-        <button onclick="vs2.show(2,{direction:'end'})">CCC right</button>
-        <button onclick="vs2.show(3,{direction:'end'})">DDD right</button>
+    <div style="background-color: rosybrown;" id="bbb2">
+        BBB 2
+        <button onclick="vs2.show(0,{direction:'start'})">AAA left 2</button>
+        <button onclick="vs2.show(2,{direction:'start'})">CCC left 2</button>
+        <button onclick="vs2.show(3,{direction:'start'})">DDD left 2</button>
+        <button onclick="vs2.show(0,{direction:'end'})">AAA right 2</button>
+        <button onclick="vs2.show(2,{direction:'end'})">CCC right 2</button>
+        <button onclick="vs2.show(3,{direction:'end'})">DDD right 2</button>
     </div>
-    <div style="background-color: powderblue;" id='ccc2'>
-        CCC
-        <button onclick="vs2.show(0,{direction:'start'})">AAA left</button>
-        <button onclick="vs2.show(1,{direction:'start'})">BBB left</button>
-        <button onclick="vs2.show(3,{direction:'start'})">DDD left</button>
-        <button onclick="vs2.show(0,{direction:'end'})">AAA right</button>
-        <button onclick="vs2.show(1,{direction:'end'})">BBB right</button>
-        <button onclick="vs2.show(3,{direction:'end'})">DDD right</button>
+    <div style="background-color: thistle;" id='ccc2'>
+        CCC 2
+        <button onclick="vs2.show(0,{direction:'start'})">AAA left 2</button>
+        <button onclick="vs2.show(1,{direction:'start'})">BBB left 2</button>
+        <button onclick="vs2.show(3,{direction:'start'})">DDD left 2</button>
+        <button onclick="vs2.show(0,{direction:'end'})">AAA right 2</button>
+        <button onclick="vs2.show(1,{direction:'end'})">BBB right 2</button>
+        <button onclick="vs2.show(3,{direction:'end'})">DDD right 2</button>
     </div>
-    <div style="background-color: oldlace;" id="ddd2">
-        DDD
-        <button onclick="vs2.show(0,{direction:'start'})">AAA left</button>
-        <button onclick="vs2.show(1,{direction:'start'})">BBB left</button>
-        <button onclick="vs2.show(2,{direction:'start'})">CCC left</button>
-        <button onclick="vs2.show(0,{direction:'end'})">AAA right</button>
-        <button onclick="vs2.show(1,{direction:'end'})">BBB right</button>
-        <button onclick="vs2.show(2,{direction:'end'})">CCC right</button>
+    <div style="background-color: goldenrod;" id="ddd2">
+        DDD 2
+        <button onclick="vs2.show(0,{direction:'start'})">AAA left 2</button>
+        <button onclick="vs2.show(1,{direction:'start'})">BBB left 2</button>
+        <button onclick="vs2.show(2,{direction:'start'})">CCC left 2</button>
+        <button onclick="vs2.show(0,{direction:'end'})">AAA right 2</button>
+        <button onclick="vs2.show(1,{direction:'end'})">BBB right 2</button>
+        <button onclick="vs2.show(2,{direction:'end'})">CCC right 2</button>
     </div>
 </div>
 
