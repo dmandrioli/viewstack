@@ -16,6 +16,47 @@ define([
             //		The name of the CSS class of this widget.
             baseClass: "mblViewStack",
 
+            showNext: function(props){
+                this.show((this._visibleIndex + 1) % this.domNode.children.length, props);
+            },
+
+            showPrevious: function(props){
+                this.show(this._visibleIndex > 0 ? this._visibleIndex - 1 : this.domNode.children.length - 1, props);
+            },
+
+            show: function(childIndex, props){
+                if (!props){
+                    props = {transition: "slide", direction: "end"};
+                }
+                if(!props.transition || props.transition == "slide"){
+                    var toNode = this.domNode.children[childIndex];
+                    this._setVisibility(toNode, true);
+                    var fromNode = this.domNode.children[this._visibleIndex];
+                    this._setAfterTransitionHandlers(fromNode);
+                    this._setAfterTransitionHandlers(toNode);
+
+                    this._disableAnimation(toNode);
+                    props.direction == "start" ? this._leftTranslated(toNode) : this._rightTranslated(toNode);
+                    setTimeout(lang.hitch(this, function(){
+                        this._enableAnimation(toNode);
+                        this._enableAnimation(fromNode);
+                        props.direction == "start" ? this._rightTranslated(fromNode) : this._leftTranslated(fromNode);
+                        this._notTranslated(toNode);
+                    }),0);
+                    this._visibleIndex = childIndex;
+                }
+            },
+
+            addElement: function(node){
+                domConstruct.place(node, this.domNode, "last");
+                this._setVisibility(node, false);
+            },
+
+            removeElement: function(node){
+                domConstruct.destroy(node);
+                this._setVisibility(node, false);
+            },
+
             buildRendering: function(){
                 this.inherited(arguments);
                 for(var i=1; i < this.domNode.children.length; i++){
@@ -60,46 +101,7 @@ define([
                 node.removeEventListener("webkitTransitionEnd", lang.hitch(this,this._afterTransitionHandle));
                 node.removeEventListener("transitionend", lang.hitch(this,this._afterTransitionHandle)); // IE10 + FF
             },
-            showNext: function(props){
-                this.show((this._visibleIndex + 1) % this.domNode.children.length, props);
-            },
-            showPrevious: function(props){
-                this.show(this._visibleIndex > 0 ? this._visibleIndex - 1 : this.domNode.children.length - 1, props);
-            },
 
-
-            show: function(childIndex, props){
-                if (!props){
-                    props = {transition: "slide", direction: "end"};
-                }
-                if(!props.transition || props.transition == "slide"){
-                    var toNode = this.domNode.children[childIndex];
-                    this._setVisibility(toNode, true);
-                    var fromNode = this.domNode.children[this._visibleIndex];
-                    this._setAfterTransitionHandlers(fromNode);
-                    this._setAfterTransitionHandlers(toNode);
-
-                    this._disableAnimation(toNode);
-                    props.direction == "start" ? this._leftTranslated(toNode) : this._rightTranslated(toNode);
-                    setTimeout(lang.hitch(this, function(){
-                        this._enableAnimation(toNode);
-                        this._enableAnimation(fromNode);
-                        props.direction == "start" ? this._rightTranslated(fromNode) : this._leftTranslated(fromNode);
-                        this._notTranslated(toNode);
-                    }),0);
-                    this._visibleIndex = childIndex;
-                }
-            },
-
-            addElement: function(node){
-                domConstruct.place(node, this.domNode, "last");
-                this._setVisibility(node, false);
-            },
-
-            removeElement: function(node){
-                domConstruct.destroy(node);
-                this._setVisibility(node, false);
-            },
 
             _setVisibility: function(node, val){
                 node.style.visibility = val ? "visible" : "hidden";
