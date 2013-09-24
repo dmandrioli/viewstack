@@ -16,29 +16,10 @@ define([
             //		The name of the CSS class of this widget.
             baseClass: "mblViewStack",
 
-            _clipArea: function(){
-                if(this.domNode.style.width != "100%"){
-                    var cb = domGeom.getContentBox(this.domNode);
-                    var clipStr = "rect(0px, Wpx, Hpx, 0px)";
-                    //this.domNode.style.clip = clipStr.replace("W", cb.w).replace("H", cb.h);
-                }
-            },
-
-            resize: function(){
-                this._clipArea();
-            },
-
             buildRendering: function(){
                 this.inherited(arguments);
-
-                this._clipArea();
-
-                for(var i=0; i < this.domNode.children.length; i++){
-                    if(i>0){
-                        this.domNode.children[i].style.display = "none";
-                    }
-                    this.domNode.children[i].addEventListener("webkitTransitionEnd", lang.hitch(this,this._hideAfterTransition));
-                    this.domNode.children[i].addEventListener("transitionend", lang.hitch(this,this._hideAfterTransition)); // IE10 + FF
+                for(var i=1; i < this.domNode.children.length; i++){
+                    this._setVisibility(this.domNode.children[i], false);
                 }
             },
 
@@ -70,33 +51,57 @@ define([
                 domClass.remove(node, "notTranslated");
             },
 
-            show: function(childIndex, fromDirection){
-                var toNode = this.domNode.children[childIndex];
-                toNode.style.display = "";
-                var fromNode = this.domNode.children[this._visibleIndex];
-
-                this._disableAnimation(toNode);
-                fromDirection == "start" ? this._leftTranslated(toNode) : this._rightTranslated(toNode);
-                setTimeout(lang.hitch(this, function(){
-                    this._enableAnimation(toNode);
-                    this._enableAnimation(fromNode);
-                    fromDirection == "start" ? this._rightTranslated(fromNode) : this._leftTranslated(fromNode);
-                    this._notTranslated(toNode);
-                }),0);
-                this._visibleIndex = childIndex;
+            _setAfterTransitionHandlers: function(node){
+                node.addEventListener("webkitTransitionEnd", lang.hitch(this,this._afterTransitionHandle));
+                node.addEventListener("transitionend", lang.hitch(this,this._afterTransitionHandle)); // IE10 + FF
             },
 
-            _hideAfterTransition: function(event){
+            _removeAfterTransitionHandlers: function(node){
+                node.removeEventListener("webkitTransitionEnd", lang.hitch(this,this._afterTransitionHandle));
+                node.removeEventListener("transitionend", lang.hitch(this,this._afterTransitionHandle)); // IE10 + FF
+            },
+
+            show: function(childIndex, props){
+                if(!props.transition || props.transition == "slide"){
+                    var toNode = this.domNode.children[childIndex];
+                    this._setVisibility(toNode, true);
+                    var fromNode = this.domNode.children[this._visibleIndex];
+                    this._setAfterTransitionHandlers(fromNode);
+                    this._setAfterTransitionHandlers(toNode);
+
+                    this._disableAnimation(toNode);
+                    props.direction == "start" ? this._leftTranslated(toNode) : this._rightTranslated(toNode);
+                    setTimeout(lang.hitch(this, function(){
+                        this._enableAnimation(toNode);
+                        this._enableAnimation(fromNode);
+                        props.direction == "start" ? this._rightTranslated(fromNode) : this._leftTranslated(fromNode);
+                        this._notTranslated(toNode);
+                    }),0);
+                    this._visibleIndex = childIndex;
+                }
+            },
+
+            addElement: function(node){
+                this.domNode.children.push(node);
+                this._setVisibility(node, false);
+            },
+
+            _setVisibility: function(node, val){
+                node.style.visibility = val ? "visible" : "hidden";
+            },
+
+            _afterTransitionHandle: function(event){
                 var node = event.target;
                 if(domClass.contains(node, "leftTranslated") || domClass.contains(node, "rightTranslated")){
-                    node.style.display = "none";
+                    this._setVisibility(node, false);
                 }
                 domClass.remove(node, "rightTranslated");
                 domClass.remove(node, "leftTranslated");
                 domClass.remove(node, "notTranslated");
                 domClass.remove(node, "mblSlideAnim");
-
+                this._removeAfterTransitionHandlers(node);
             },
+
             destroy: function(){
             }
         });
