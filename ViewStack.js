@@ -89,7 +89,7 @@ define([
             _rightTranslated: function(node){
                 domClass.add(node, "rightTranslated");
                 domClass.remove(node, "notTranslated");
-                domClass.remove(node, "notTranslated");
+                domClass.remove(node, "leftTranslated");
             },
 
             _setAfterTransitionHandlers: function(node){
