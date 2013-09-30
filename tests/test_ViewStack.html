@@ -15,8 +15,15 @@
         require([
             "dojox/mobile",
             "dojox/mobile/parser",
+            "dojox/mobile/Pane",
             "viewstack/ViewStack"
-        ], function(mobile, parser, ViewStack){
+        ], function(mobile, parser, Pane){
+            createWidget = function (){
+                var p = new Pane();
+                p.domNode.innerHTML = "EEE";
+                p.domNode.style.backgroundColor = "orangered";
+                vs.addChild(p);
+            }
         });
 
     </script>
@@ -29,86 +36,61 @@
 </head>
 <body style="visibility:hidden; margin:2em;">
 
-<button onclick="vs.removeElement(vs.domNode.children[vs.domNode.children.length-1])">Remove last element</button>
-<button onclick="vs.addElement(vs2.domNode.children[0])">Add AAA2</button>
+<button onclick="vs.show('ccc')">Show CCC</button>
+<button onclick="vs.removeChild('bbb')">Remove BBB</button>
+<button onclick="vs.addChild('aaa2')">Add AAA2</button>
+<button onclick="createWidget()">Create EEE</button>
 <button onclick="vs.showPrevious({direction: 'start'})">Previous</button>
 <button onclick="vs.showNext()">Next</button>
 <br>
-<div data-dojo-id="vs" data-dojo-type="viewstack/ViewStack" style="display:inline-block; width:50%; height: 300px;">
-    <div style="background-color: honeydew;" id="aaa">
+<div data-dojo-id="vs" data-dojo-type="viewstack/ViewStack" style="display:inline-block; width:50%; height: 300px; border: 2px solid gold">
+    <div style="background-color: honeydew;" id="aaa" data-dojo-type="dojox/mobile/Pane">
         AAA
-        <button onclick="vs.show(1,{direction:'start'})">BBB left</button>
-        <button onclick="vs.show(2,{direction:'start'})">CCC left</button>
-        <button onclick="vs.show(3,{direction:'start'})">DDD left</button>
-        <button onclick="vs.show(1,{direction:'end'})">BBB right</button>
-        <button onclick="vs.show(2,{direction:'end'})">CCC right</button>
-        <button onclick="vs.show(3,{direction:'end'})">DDD right</button>
+        <button onclick="vs.show('bbb',{direction:'start'})">BBB left</button>
+        <button onclick="vs.show('ccc',{direction:'start'})">CCC left</button>
+        <button onclick="vs.show('ddd',{direction:'start'})">DDD left</button>
+        <button onclick="vs.show('bbb',{direction:'end'})">BBB right</button>
+        <button onclick="vs.show('ccc',{direction:'end'})">CCC right</button>
+        <button onclick="vs.show('ddd',{direction:'end'})">DDD right</button>
     </div>
-    <div style="background-color: whitesmoke;" id="bbb">
+    <div style="background-color: whitesmoke;" id="bbb" data-dojo-type="dojox/mobile/Pane">
         BBB
-        <button onclick="vs.show(0,{direction:'start'})">AAA left</button>
-        <button onclick="vs.show(2,{direction:'start'})">CCC left</button>
-        <button onclick="vs.show(3,{direction:'start'})">DDD left</button>
-        <button onclick="vs.show(0,{direction:'end'})">AAA right</button>
-        <button onclick="vs.show(2,{direction:'end'})">CCC right</button>
-        <button onclick="vs.show(3,{direction:'end'})">DDD right</button>
+        <button onclick="vs.show('aaa',{direction:'start'})">AAA left</button>
+        <button onclick="vs.show('ccc',{direction:'start'})">CCC left</button>
+        <button onclick="vs.show('ddd',{direction:'start'})">DDD left</button>
+        <button onclick="vs.show('aaa',{direction:'end'})">AAA right</button>
+        <button onclick="vs.show('ccc',{direction:'end'})">CCC right</button>
+        <button onclick="vs.show('ddd',{direction:'end'})">DDD right</button>
     </div>
-    <div style="background-color: powderblue;" id='ccc'>
+    <div style="background-color: powderblue;" id='ccc' data-dojo-type="dojox/mobile/Pane">
         CCC
-        <button onclick="vs.show(0,{direction:'start'})">AAA left</button>
-        <button onclick="vs.show(1,{direction:'start'})">BBB left</button>
-        <button onclick="vs.show(3,{direction:'start'})">DDD left</button>
-        <button onclick="vs.show(0,{direction:'end'})">AAA right</button>
-        <button onclick="vs.show(1,{direction:'end'})">BBB right</button>
-        <button onclick="vs.show(3,{direction:'end'})">DDD right</button>
+        <button onclick="vs.show('aaa',{direction:'start'})">AAA left</button>
+        <button onclick="vs.show('bbb',{direction:'start'})">BBB left</button>
+        <button onclick="vs.show('ddd',{direction:'start'})">DDD left</button>
+        <button onclick="vs.show('aaa',{direction:'end'})">AAA right</button>
+        <button onclick="vs.show('bbb',{direction:'end'})">BBB right</button>
+        <button onclick="vs.show('ddd',{direction:'end'})">DDD right</button>
     </div>
-    <div style="background-color: oldlace;" id="ddd">
+    <div style="background-color: oldlace;" id="ddd" data-dojo-type="dojox/mobile/Pane">
         DDD
-        <button onclick="vs.show(0,{direction:'start'})">AAA left</button>
-        <button onclick="vs.show(1,{direction:'start'})">BBB left</button>
-        <button onclick="vs.show(2,{direction:'start'})">CCC left</button>
-        <button onclick="vs.show(0,{direction:'end'})">AAA right</button>
-        <button onclick="vs.show(1,{direction:'end'})">BBB right</button>
-        <button onclick="vs.show(2,{direction:'end'})">CCC right</button>
+        <button onclick="vs.show('aaa',{direction:'start'})">AAA left</button>
+        <button onclick="vs.show('bbb',{direction:'start'})">BBB left</button>
+        <button onclick="vs.show('ccc',{direction:'start'})">CCC left</button>
+        <button onclick="vs.show('aaa',{direction:'end'})">AAA right</button>
+        <button onclick="vs.show('bbb',{direction:'end'})">BBB right</button>
+        <button onclick="vs.show('ccc',{direction:'end'})">CCC right</button>
     </div>
 </div>
 
-<div data-dojo-id="vs2" data-dojo-type="viewstack/ViewStack" style="display:inline-block; width:50%; height: 300px; border: 1px solid black">
-    <div style="background-color: darkolivegreen;" id="aaa2">
+<div style="display: none">
+    <div style="background-color: darkolivegreen;" id="aaa2" data-dojo-type="dojox/mobile/Pane">
         AAA 2
-        <button onclick="vs2.show(1,{direction:'start'})">BBB left 2</button>
-        <button onclick="vs2.show(2,{direction:'start'})">CCC left 2</button>
-        <button onclick="vs2.show(3,{direction:'start'})">DDD left 2</button>
-        <button onclick="vs2.show(1,{direction:'end'})">BBB right 2</button>
-        <button onclick="vs2.show(2,{direction:'end'})">CCC right 2</button>
-        <button onclick="vs2.show(3,{direction:'end'})">DDD right 2</button>
-    </div>
-    <div style="background-color: rosybrown;" id="bbb2">
-        BBB 2
-        <button onclick="vs2.show(0,{direction:'start'})">AAA left 2</button>
-        <button onclick="vs2.show(2,{direction:'start'})">CCC left 2</button>
-        <button onclick="vs2.show(3,{direction:'start'})">DDD left 2</button>
-        <button onclick="vs2.show(0,{direction:'end'})">AAA right 2</button>
-        <button onclick="vs2.show(2,{direction:'end'})">CCC right 2</button>
-        <button onclick="vs2.show(3,{direction:'end'})">DDD right 2</button>
-    </div>
-    <div style="background-color: thistle;" id='ccc2'>
-        CCC 2
-        <button onclick="vs2.show(0,{direction:'start'})">AAA left 2</button>
-        <button onclick="vs2.show(1,{direction:'start'})">BBB left 2</button>
-        <button onclick="vs2.show(3,{direction:'start'})">DDD left 2</button>
-        <button onclick="vs2.show(0,{direction:'end'})">AAA right 2</button>
-        <button onclick="vs2.show(1,{direction:'end'})">BBB right 2</button>
-        <button onclick="vs2.show(3,{direction:'end'})">DDD right 2</button>
-    </div>
-    <div style="background-color: goldenrod;" id="ddd2">
-        DDD 2
-        <button onclick="vs2.show(0,{direction:'start'})">AAA left 2</button>
-        <button onclick="vs2.show(1,{direction:'start'})">BBB left 2</button>
-        <button onclick="vs2.show(2,{direction:'start'})">CCC left 2</button>
-        <button onclick="vs2.show(0,{direction:'end'})">AAA right 2</button>
-        <button onclick="vs2.show(1,{direction:'end'})">BBB right 2</button>
-        <button onclick="vs2.show(2,{direction:'end'})">CCC right 2</button>
+        <button onclick="vs.show('aaa',{direction:'start'})">AAA left</button>
+        <button onclick="vs.show('ccc',{direction:'start'})">CCC left</button>
+        <button onclick="vs.show('ddd',{direction:'start'})">DDD left</button>
+        <button onclick="vs.show('aaa',{direction:'end'})">AAA right</button>
+        <button onclick="vs.show('ccc',{direction:'end'})">CCC right</button>
+        <button onclick="vs.show('ddd',{direction:'end'})">DDD right</button>
     </div>
 </div>
 

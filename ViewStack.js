@@ -1,8 +1,8 @@
 define([
     "dojo/_base/declare",
     "dojo/_base/lang",
-    "dijit/_WidgetBase", "dojo/dom-geometry", "dojo/dom-class", "dojo/dom-construct"],
-    function(declare, lang, WidgetBase, domGeom, domClass, domConstruct){
+    "dijit/_WidgetBase", "dojo/dom-geometry", "dojo/dom-class", "dojo/dom-construct", "dijit/registry"],
+    function(declare, lang, WidgetBase, domGeom, domClass, domConstruct, registry){
         return declare(WidgetBase, {
             // summary:
             //		xxx
@@ -17,44 +17,71 @@ define([
             baseClass: "mblViewStack",
 
             showNext: function(props){
-                this.show((this._visibleIndex + 1) % this.domNode.children.length, props);
+                if(!this._visibleChild){
+                    this._visibleChild = registry.byNode(this.domNode.children[0]);
+                }
+                if(this._visibleChild){
+                    this.show(this._visibleChild.getNextSibling(), props);
+                }
             },
 
             showPrevious: function(props){
-                this.show(this._visibleIndex > 0 ? this._visibleIndex - 1 : this.domNode.children.length - 1, props);
-            },
-
-            show: function(childIndex, props){
-                if (!props){
-                    props = {transition: "slide", direction: "end"};
+                if(!this._visibleChild){
+                    this._visibleChild = registry.byNode(this.domNode.children[0]);
                 }
-                if(!props.transition || props.transition == "slide"){
-                    var toNode = this.domNode.children[childIndex];
-                    this._setVisibility(toNode, true);
-                    var fromNode = this.domNode.children[this._visibleIndex];
-                    this._setAfterTransitionHandlers(fromNode);
-                    this._setAfterTransitionHandlers(toNode);
+                if(this._visibleChild){
+                    this.show(this._visibleChild.getPreviousSibling(), props);
+                }
 
-                    this._disableAnimation(toNode);
-                    props.direction == "start" ? this._leftTranslated(toNode) : this._rightTranslated(toNode);
-                    setTimeout(lang.hitch(this, function(){
-                        this._enableAnimation(toNode);
-                        this._enableAnimation(fromNode);
-                        props.direction == "start" ? this._rightTranslated(fromNode) : this._leftTranslated(fromNode);
-                        this._notTranslated(toNode);
-                    }),0);
-                    this._visibleIndex = childIndex;
+            },
+
+            show: function(widgetOrId, props){
+                if(!this._visibleChild){
+                    this._visibleChild = registry.byNode(this.domNode.children[0]);
+                }
+                if(this._visibleChild){
+                    var widget = this._getWidget(widgetOrId);
+                    if (!props){
+                        props = {transition: "slide", direction: "end"};
+                    }
+                    if(!props.transition || props.transition == "slide"){
+
+                        var toNode = widget.domNode;
+                        this._setVisibility(toNode, true);
+                        var fromNode = this._visibleChild.domNode;
+                        this._setAfterTransitionHandlers(fromNode);
+                        this._setAfterTransitionHandlers(toNode);
+
+                        this._disableAnimation(toNode);
+                        props.direction == "start" ? this._leftTranslated(toNode) : this._rightTranslated(toNode);
+                        setTimeout(lang.hitch(this, function(){
+                            this._enableAnimation(toNode);
+                            this._enableAnimation(fromNode);
+                            props.direction == "start" ? this._rightTranslated(fromNode) : this._leftTranslated(fromNode);
+                            this._notTranslated(toNode);
+                        }),0);
+                        this._visibleChild = widget;
+                    }
                 }
             },
 
-            addElement: function(node){
-                domConstruct.place(node, this.domNode, "last");
-                this._setVisibility(node, false);
+            addChild: function(widgetOrId){
+                var widget = this._getWidget(widgetOrId);
+                if(widget){
+                    domConstruct.place(widget.domNode, this.domNode);
+                    this._setVisibility(widget.domNode, false);
+                }
             },
 
-            removeElement: function(node){
-                domConstruct.destroy(node);
-                this._setVisibility(node, false);
+            removeChild: function(widgetOrId){
+                var widget = this._getWidget(widgetOrId);
+                if(widget){
+                    domConstruct.destroy(widget.domNode);
+                }
+            },
+
+            _getWidget: function(widgetOrId){
+                return typeof widgetOrId == "string" ? registry.byId(widgetOrId) : widgetOrId;
             },
 
             buildRendering: function(){
@@ -64,7 +91,7 @@ define([
                 }
             },
 
-            _visibleIndex:0,
+            _visibleChild: null,
 
             _enableAnimation: function (node){
                 domClass.add(node, "mblSlideAnim");
