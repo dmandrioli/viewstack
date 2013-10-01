@@ -41,26 +41,28 @@ define([
                 }
                 if(this._visibleChild){
                     var widget = this._getWidget(widgetOrId);
-                    if (!props){
-                        props = {transition: "slide", direction: "end"};
-                    }
-                    if(!props.transition || props.transition == "slide"){
+                    if(widget){
+                        if (!props){
+                            props = {transition: "slide", direction: "end"};
+                        }
+                        if(!props.transition || props.transition == "slide"){
 
-                        var toNode = widget.domNode;
-                        this._setVisibility(toNode, true);
-                        var fromNode = this._visibleChild.domNode;
-                        this._setAfterTransitionHandlers(fromNode);
-                        this._setAfterTransitionHandlers(toNode);
+                            var toNode = widget.domNode;
+                            this._setVisibility(toNode, true);
+                            var fromNode = this._visibleChild.domNode;
+                            this._setAfterTransitionHandlers(fromNode);
+                            this._setAfterTransitionHandlers(toNode);
 
-                        this._disableAnimation(toNode);
-                        props.direction == "start" ? this._leftTranslated(toNode) : this._rightTranslated(toNode);
-                        setTimeout(lang.hitch(this, function(){
-                            this._enableAnimation(toNode);
-                            this._enableAnimation(fromNode);
-                            props.direction == "start" ? this._rightTranslated(fromNode) : this._leftTranslated(fromNode);
-                            this._notTranslated(toNode);
-                        }),0);
-                        this._visibleChild = widget;
+                            this._disableAnimation(toNode);
+                            props.direction == "start" ? this._leftTranslated(toNode) : this._rightTranslated(toNode);
+                            setTimeout(lang.hitch(this, function(){
+                                this._enableAnimation(toNode);
+                                this._enableAnimation(fromNode);
+                                props.direction == "start" ? this._rightTranslated(fromNode) : this._leftTranslated(fromNode);
+                                this._notTranslated(toNode);
+                            }),0);
+                            this._visibleChild = widget;
+                        }
                     }
                 }
             },
